@@ -7,7 +7,6 @@ import morgan from "morgan";
 import "colors";
 import i18n from "./src/config/i18n";
 import fileUpload from 'express-fileupload';
-import exampleRoutes from "./src/routes/example";
 import setupSwagger from './src/helpers/swagger';
 import cardRouter from "./src/routes/card.router";
 
@@ -80,7 +79,6 @@ class Server {
   }
 
   routes() {
-    this.app.use(this.path.example, exampleRoutes);
     this.app.use(this.path.example, cardRouter);
   }
 
