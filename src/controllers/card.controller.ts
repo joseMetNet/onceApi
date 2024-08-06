@@ -48,7 +48,7 @@ export const createMemberAndMembership = async (req: Request, res: Response) => 
 
     res.status(201).json({ memberId, membership });
   } catch (error: any) {
-    console.error('Error creating member and membership:', error);
+    console.error('Error creating member and membership:', JSON.stringify(error));
     if (error.message === 'Card has expired') {
       res.status(400).json({ message: 'Card has expired' });
     } else if (error.message === 'Agreement ID does not exist') {
@@ -56,7 +56,7 @@ export const createMemberAndMembership = async (req: Request, res: Response) => 
     } else if (error instanceof UniqueConstraintError) {
       res.status(400).json({ message: 'The email address is already registered.' });
     } else {
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(500).json({ message: JSON.stringify(error) });
     }
   }
 };
