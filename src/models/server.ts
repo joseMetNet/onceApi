@@ -1,14 +1,14 @@
-import config from "./src/config/config";
+import config from "../config/config";
 import { Sequelize } from '@sequelize/core';
 import { MySqlDialect } from '@sequelize/mysql';
 import express, { Application } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import "colors";
-import i18n from "./src/config/i18n";
+import i18n from "../config/i18n";
 import fileUpload from 'express-fileupload';
-import setupSwagger from './src/helpers/swagger';
-import cardRouter from "./src/routes/card.router";
+import setupSwagger from '../helpers/swagger';
+import cardRouter from "../routes/card.router";
 
 const sequelize = new Sequelize({
   dialect: MySqlDialect,
