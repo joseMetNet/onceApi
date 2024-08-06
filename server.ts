@@ -36,7 +36,7 @@ class Server {
 
   constructor() {
     this.app = express();
-    this.port = config.port || '8080';
+    this.port = config.port || "8080";
     this.path = {
       example: "/yekoclub",
     };
