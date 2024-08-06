@@ -28,7 +28,7 @@ export const createMemberAndMembership = async (req: Request, res: Response) => 
       ...memberData,
       activation_ip: ipAddress, // Establecer la dirección IP
       created_at: registrationDate,
-      updated_at: registrationDate,
+      updated_at: registrationDate, 
     });
 
     if (!memberId) {
