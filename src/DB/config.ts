@@ -10,6 +10,7 @@ const dbConnection  = new Sequelize({
   host: config.host_mysql,
   port: 25060,
   connectTimeout: 10000,
+  charset: 'utf8mb4',
 });
 
 // Función para probar la conexión

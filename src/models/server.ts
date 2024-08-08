@@ -18,6 +18,7 @@ const sequelize = new Sequelize({
   host: config.host_mysql,
   port: 25060,
   connectTimeout: 10000,
+  charset: 'utf8mb4',
 });
 
 async function testConnection() {
