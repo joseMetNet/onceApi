@@ -2,6 +2,7 @@ import Card from '../models/card.model';
 import Member from '../models/member.model';
 import Membership from '../models/membership.model';
 import Agreement from '../models/agreement.model';
+import { v4 as uuidv4 } from 'uuid';
 
 class CardRepository {
   async validateAndActivateCard(number: string, code: string, registrationDate: Date): Promise<Card | null> {
@@ -18,37 +19,41 @@ class CardRepository {
     return null;
   }
 
-  async getAgreementIdById(id: number): Promise<Buffer | null> {
+  async getAgreementIdById(id: number): Promise<string | null> {
     const agreement = await Agreement.findOne({
       attributes: ['agreement_id'],
       where: { id },
     });
 
     if (agreement) {
-      return agreement.agreement_id as unknown as Buffer;
+      return (agreement.agreement_id as unknown as Buffer).toString('hex');
     }
     return null;
   }
 
   async createMember(memberData: any): Promise<number> {
-    const agreementId = await this.getAgreementIdById(5); // Cambiar el ID según tu lógica
+    const agreementId = await this.getAgreementIdById(5);
     if (!agreementId) {
       throw new Error('Agreement ID does not exist');
     }
-
-    memberData.agreement_id = agreementId;
-
+  
+    const memberId = uuidv4();
+    const memberIdBinary = Buffer.from(memberId.replace(/-/g, ''), 'hex');
+  
+    memberData.agreement_id = Buffer.from(agreementId.replace(/-/g, ''), 'hex');
+    memberData.member_id = memberIdBinary;
+  
     const member = await Member.create(memberData);
-    return member.id; // Devuelve el ID numérico del miembro
+    return member.id;
   }
-
+  
   async createMembership(memberId: number, cardId: number, publicId: Buffer): Promise<Membership> {
     const membershipData = {
       public_id: publicId,
       member_id: memberId,
       card_id: cardId,
     };
-
+  
     const membership = await Membership.create(membershipData);
     return membership;
   }

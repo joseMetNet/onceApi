@@ -23,30 +23,35 @@ export const createMemberAndMembership = async (req: Request, res: Response) => 
       return res.status(400).json({ message: 'The email address is already registered.' });
     }
 
+    // Generar `member_id` como UUID y almacenarlo como binario
+    const memberId = uuidv4();
+    const memberIdBinary = Buffer.from(memberId.replace(/-/g, ''), 'hex');
+
     // Crear miembro
-    const memberId = await CardRepository.createMember({
+    const memberIdNum = await CardRepository.createMember({
       ...memberData,
-      activation_ip: ipAddress, // Establecer la dirección IP
+      agreement_id: memberData.agreement_id,
+      member_id: memberIdBinary,
+      activation_ip: ipAddress,
       created_at: registrationDate,
-      updated_at: registrationDate, 
+      updated_at: registrationDate,
     });
 
-    if (!memberId) {
+    if (!memberIdNum) {
       return res.status(500).json({ message: 'Failed to create member' });
     }
 
-    // Generar `public_id` automáticamente y convertir a formato binario
     const publicId = uuidv4();
-    const publicIdBinary = Buffer.from(publicId.replace(/-/g, ''), 'hex'); // Convertir UUID a formato binario
+    const publicIdBinary = Buffer.from(publicId.replace(/-/g, ''), 'hex');
 
     // Crear membresía
     const membership = await CardRepository.createMembership(
-      memberId,
+      memberIdNum, 
       card.id,
       publicIdBinary
     );
 
-    res.status(201).json({ memberId, membership });
+    res.status(201).json({ memberId: memberIdNum, membership });
   } catch (error: any) {
     console.error('Error creating member and membership:', JSON.stringify(error));
     if (error.message === 'Card has expired') {

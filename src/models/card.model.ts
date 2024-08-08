@@ -21,11 +21,11 @@ Card.init({
     primaryKey: true,
   },
   card_id: {
-    type: DataTypes.BLOB('tiny'),
+    type: DataTypes.STRING,
     allowNull: false,
   },
   agreement_id: {
-    type: DataTypes.BLOB('tiny'),
+    type: DataTypes.STRING,
     allowNull: false,
   },
   number: {

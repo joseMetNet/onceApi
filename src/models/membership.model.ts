@@ -17,7 +17,7 @@ Membership.init({
     primaryKey: true,
   },
   public_id: {
-    type: DataTypes.BLOB('tiny'),
+    type: DataTypes.BLOB,
     allowNull: false,
   },
   member_id: {

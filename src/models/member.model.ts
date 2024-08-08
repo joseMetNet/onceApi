@@ -1,6 +1,5 @@
 import { DataTypes, Model } from '@sequelize/core';
 import { dbConnection } from '../DB/config';
-import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment-timezone';
 
 class Member extends Model {
@@ -26,12 +25,11 @@ Member.init({
     primaryKey: true,
   },
   member_id: {
-    type: DataTypes.BLOB('tiny'),
-    defaultValue: () => Buffer.from(uuidv4().replace(/-/g, ''), 'hex'),
+    type: DataTypes.BLOB,
     allowNull: false,
   },
   agreement_id: {
-    type: DataTypes.BLOB('tiny'),
+    type: DataTypes.BLOB,
     allowNull: false,
   },
   fullname: {

@@ -1,8 +1,6 @@
 import { DataTypes, Model } from '@sequelize/core';
 import { dbConnection } from '../DB/config';
-import { Sequelize } from 'sequelize';
 
-// Define el modelo Card
 class Agreement extends Model {
   public id!: number;
   public agreement_id!: string;
@@ -12,7 +10,6 @@ class Agreement extends Model {
   public updated_at!: Date;
 }
 
-// Inicializa el modelo
 Agreement.init({
   id: {
     type: DataTypes.INTEGER,
