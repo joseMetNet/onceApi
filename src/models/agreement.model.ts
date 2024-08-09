@@ -1,5 +1,6 @@
 import { DataTypes, Model } from '@sequelize/core';
 import { dbConnection } from '../DB/config';
+import moment from 'moment-timezone';
 
 class Agreement extends Model {
   public id!: number;
