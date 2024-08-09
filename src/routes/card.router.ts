@@ -47,6 +47,9 @@ const cardRouter = Router();
  *                     type: string
  *                     format: date
  *                     example: "yyyy-mm-dd"
+ *                   preferred_department_id:
+ *                     type: string
+ *                     example: "1"
  *     responses:
  *       201:
  *         description: Member and membership created successfully

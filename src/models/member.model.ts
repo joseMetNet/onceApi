@@ -13,6 +13,7 @@ class Member extends Model {
   public gender!: string;
   public identification!: string;
   public birthdate!: Date;
+  public preferred_department_id!: Buffer;
   public activation_ip!: string;
   public created_at?: Date;
   public updated_at?: Date;
@@ -59,6 +60,10 @@ Member.init({
   birthdate: {
     type: DataTypes.DATE,
     allowNull: false,
+  },
+  preferred_department_id: {
+    type: DataTypes.BLOB,
+    allowNull: true,
   },
   activation_ip: {
     type: DataTypes.STRING,

@@ -32,6 +32,7 @@ export const createMemberAndMembership = async (req: Request, res: Response) => 
       activation_ip: ipAddress,
       created_at: registrationDate,
       updated_at: registrationDate,
+      preferred_department_id: memberData.preferred_department_id,
     });
 
     if (!memberIdNum) {

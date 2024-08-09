@@ -42,6 +42,8 @@ class CardRepository {
   
     memberData.agreement_id = Buffer.from(agreementId.replace(/-/g, ''), 'hex');
     memberData.member_id = memberIdBinary;
+
+    memberData.preferred_department_id = Buffer.from(memberData.preferred_department_id.replace(/-/g, ''), 'hex');
   
     const member = await Member.create(memberData);
     return member.id;
