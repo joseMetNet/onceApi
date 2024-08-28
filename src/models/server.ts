@@ -9,6 +9,7 @@ import i18n from "../config/i18n";
 import fileUpload from 'express-fileupload';
 import setupSwagger from '../helpers/swagger';
 import cardRouter from "../routes/card.router";
+import meberKuponRouter from "../routes/member_kupon";
 
 const sequelize = new Sequelize({
   dialect: MySqlDialect,
@@ -81,6 +82,7 @@ class Server {
 
   routes() {
     this.app.use(this.path.example, cardRouter);
+    this.app.use(this.path.example, meberKuponRouter);
   }
 
   listen() {
