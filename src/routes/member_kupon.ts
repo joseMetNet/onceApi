@@ -16,18 +16,14 @@ const meberKuponRouter = Router();
  *           schema:
  *             type: object
  *             properties:
- *               member_id:
- *                 type: number
- *                 example: 1
- *               koupon_id:
- *                 type: number
- *                 example: 101
+ *               member_uuid:
+ *                 type: string
+ *               koupon_uuid:
+ *                 type: string
  *               koupon_value_id:
  *                 type: number
- *                 example: 202
  *               external_reference_id:
  *                 type: string
- *                 example: "optional-ref-123"
  *     responses:
  *       201:
  *         description: Member koupon created successfully
@@ -38,27 +34,18 @@ const meberKuponRouter = Router();
  *               properties:
  *                 id:
  *                   type: number
- *                   example: 1
  *                 member_id:
  *                   type: number
- *                   example: 1
  *                 koupon_id:
  *                   type: number
- *                   example: 101
  *                 koupon_value_id:
  *                   type: number
- *                   example: 202
  *                 external_reference_id:
  *                   type: string
- *                   example: "optional-ref-123"
  *                 created_at:
  *                   type: string
- *                   format: date-time
- *                   example: "2024-08-28T10:00:00Z"
  *                 updated_at:
  *                   type: string
- *                   format: date-time
- *                   example: "2024-08-28T10:00:00Z"
  *       400:
  *         description: Bad request
  *       500:

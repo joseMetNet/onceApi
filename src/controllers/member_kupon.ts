@@ -5,13 +5,15 @@ import member_kouponsRepository from '../repository/member_koupons.repository';
 
 export const createMemberKoupon = async (req: Request, res: Response) => {
   try {
-    const { member_id, koupon_id, koupon_value_id, external_reference_id } = req.body;
+    const { member_id, member_uuid, koupon_uuid, koupon_id, koupon_value_id, external_reference_id } = req.body;
     
     const currentDate = moment().tz('America/Bogota').toDate();
 
     const memberKouponData = {
       member_id,
       koupon_id,
+      member_uuid,
+      koupon_uuid,
       koupon_value_id,
       external_reference_id: external_reference_id || '',
       created_at: currentDate,
