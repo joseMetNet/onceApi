@@ -58,3 +58,75 @@ export const createMemberAndMembership = async (req: Request, res: Response) => 
     }
   }
 };
+
+export const checkMembershipStatus = async (req: Request, res: Response) => {
+  try {
+    const { number, identification } = req.query;
+
+    if (!number && !identification) {
+      return res.status(400).json({ message: 'Debe proporcionar un número de tarjeta o una identificación' });
+    }
+
+    const membership = await CardRepository.findMembershipByNumberOrIdentification(
+      number as string,
+      identification as string
+    );
+
+    if (!membership) {
+      return res.status(404).json({ message: 'Número de tarjeta o identificación incorrectos' });
+    }
+
+    // Si membership es un array, usa el primer elemento
+    const cardId = membership.card_id || membership[0]?.card_id;
+
+    // Verifica si la tarjeta está vencida
+    const isExpired = await CardRepository.isCardExpired(cardId);
+
+    const membershipData = await CardRepository.getMembershipByCardId(cardId);
+
+    if (!membershipData) {
+      return res.status(404).json({ message: 'No se encontró información de la membresía con ese card_id' });
+    }
+
+    const memberId = membershipData[0]?.member_id;
+    const member = await CardRepository.findMemberById(memberId);
+
+    if (!member) {
+      return res.status(404).json({ message: 'Miembro no encontrado' });
+    }
+
+    // Si la tarjeta está vencida, devolver mensaje de vencimiento con los datos del usuario
+    if (isExpired) {
+      return res.status(400).json({
+        message: 'La tarjeta está vencida',
+        memberData: {
+          fullname: member.fullname,
+          email: member.email,
+          identification: member.identification
+        }
+      });
+    }
+
+    const cardStatus = membershipData[0]?.card_status;
+    let cardMessage = '';
+
+    if (cardStatus === 'active') {
+      cardMessage = 'La tarjeta está activa';
+    } else if (cardStatus === 'stock') {
+      cardMessage = 'La tarjeta está inactiva';
+    } else {
+      cardMessage = `Estado de la tarjeta desconocido: ${cardStatus}`;
+    }
+
+    return res.status(200).json({
+      message: cardMessage,
+      memberData: {
+        fullname: member.fullname,
+        email: member.email,
+        identification: member.identification
+      }
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};

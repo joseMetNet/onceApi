@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createMemberAndMembership } from '../controllers/card.controller';
+import { checkMembershipStatus, createMemberAndMembership } from '../controllers/card.controller';
 
 const cardRouter = Router();
 
@@ -82,5 +82,73 @@ const cardRouter = Router();
  *         description: Internal server error
  */
 cardRouter.post('/create-member-and-membership', createMemberAndMembership);
+
+/**
+ * @swagger
+ * /membership/check:
+ *   get:
+ *     summary: Check membership status by card number or identification
+ *     tags: [Members]
+ *     parameters:
+ *       - in: query
+ *         name: number
+ *         schema:
+ *           type: string
+ *         description: Card number to check the membership status
+ *       - in: query
+ *         name: identification
+ *         schema:
+ *           type: string
+ *         description: Member identification to check the membership status
+ *     responses:
+ *       200:
+ *         description: Membership status retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "La tarjeta está activa"
+ *                 memberData:
+ *                   type: object
+ *                   properties:
+ *                     fullname:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *       400:
+ *         description: Bad request - card number or identification not provided or mismatch
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Debe proporcionar un número de tarjeta o una identificación"
+ *       404:
+ *         description: Membership not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Membresía no encontrada"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al buscar membresía: ..."
+ */
+cardRouter.get('/membership/check', checkMembershipStatus)
 
 export default cardRouter;
