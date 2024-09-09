@@ -4,7 +4,7 @@ import { format } from 'date-fns-tz';
 import { dbConnection } from '../DB/config';
 
 class MemberKouponsRepository {
-  private async getMemberIdByUUID(uuid: string): Promise<number | null> {
+  async getMemberIdByUUID(uuid: string): Promise<number | null> {
     try {
       const [results]: any = await dbConnection.query(
         `SELECT id FROM yekoclub.member WHERE BIN_TO_UUID(member_id) = '${uuid}'`,

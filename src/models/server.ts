@@ -10,6 +10,7 @@ import fileUpload from 'express-fileupload';
 import setupSwagger from '../helpers/swagger';
 import cardRouter from "../routes/card.router";
 import meberKuponRouter from "../routes/member_kupon";
+import memberCardActivationProcessRouter from "../routes/member_card_activation_process.router";
 
 const sequelize = new Sequelize({
   dialect: MySqlDialect,
@@ -83,6 +84,7 @@ class Server {
   routes() {
     this.app.use(this.path.example, cardRouter);
     this.app.use(this.path.example, meberKuponRouter);
+    this.app.use(this.path.example, memberCardActivationProcessRouter)
   }
 
   listen() {
