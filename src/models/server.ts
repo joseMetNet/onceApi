@@ -11,6 +11,8 @@ import setupSwagger from '../helpers/swagger';
 import cardRouter from "../routes/card.router";
 import meberKuponRouter from "../routes/member_kupon";
 import memberCardActivationProcessRouter from "../routes/member_card_activation_process.router";
+import abonadoRouter from "../routes/abonado.router";
+import deliveryOrderRouter from "../routes/delivery_order.router";
 
 const sequelize = new Sequelize({
   dialect: MySqlDialect,
@@ -84,7 +86,9 @@ class Server {
   routes() {
     this.app.use(this.path.example, cardRouter);
     this.app.use(this.path.example, meberKuponRouter);
-    this.app.use(this.path.example, memberCardActivationProcessRouter)
+    this.app.use(this.path.example, memberCardActivationProcessRouter);
+    this.app.use(this.path.example, abonadoRouter);
+    this.app.use(this.path.example, deliveryOrderRouter)
   }
 
   listen() {

@@ -10,22 +10,18 @@ export const createMemberAndMembership = async (req: Request, res: Response) => 
     const { number, code, memberData } = req.body;
     const registrationDate = moment().tz('America/Bogota').toDate();
     
-    // Capturar la IP del cliente y truncarla a 15 caracteres si es necesario
     const ipAddress = req.ip.substring(0, 15);
 
-    // Validar y activar la tarjeta
     const card = await CardRepository.validateAndActivateCard(number, code, registrationDate);
     if (!card) {
       return res.status(404).json({ message: 'Card not found' });
     }
 
-    // Verificar si el email ya existe
     const existingMember = await CardRepository.findMemberByEmail(memberData.email);
     if (existingMember) {
       return res.status(400).json({ message: 'The email address is already registered.' });
     }
 
-    // Crear miembro
     const memberIdNum = await CardRepository.createMember({
       ...memberData,
       agreement_id: memberData.agreement_id,
@@ -42,7 +38,6 @@ export const createMemberAndMembership = async (req: Request, res: Response) => 
     const publicId = uuidv4();
     const publicIdBinary = Buffer.from(publicId.replace(/-/g, ''), 'hex');
 
-    // Crear membresía
     const membership = await CardRepository.createMembership(
       memberIdNum, 
       card.id,
@@ -76,10 +71,8 @@ export const checkMembershipStatus = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Número de tarjeta o identificación incorrectos' });
     }
 
-    // Si membership es un array, usa el primer elemento
     const cardId = membership.card_id || membership[0]?.card_id;
 
-    // Verifica si la tarjeta está vencida
     const isExpired = await CardRepository.isCardExpired(cardId);
 
     const membershipData = await CardRepository.getMembershipByCardId(cardId);
@@ -95,7 +88,6 @@ export const checkMembershipStatus = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Miembro no encontrado' });
     }
 
-    // Si la tarjeta está vencida, devolver mensaje de vencimiento con los datos del usuario
     if (isExpired) {
       return res.status(400).json({
         message: 'La tarjeta está vencida',
